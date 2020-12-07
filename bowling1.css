@@ -5,30 +5,62 @@
 .highlightFrame{background-color: lightblue;}
 .hidden {visibility: hidden;}
 .bonusColor{background-color: greenyellow;}
+#tabs{float:left; width:500px;}
+.border{float:left;width:500px;}
+/*body{
+    background-color: rgb(160,160,160);
+}*/
+
 #scheduledGamesTable{
     height: 540px;
     box-sizing:border-box;
 }
-thead{
+thead{ position:sticky;
     box-sizing: border-box;
-    
+
 }
 th {
     position:sticky;
     top: -1px;
 }
 #gameFrames td{border: black thin solid;}
-
+#table1{
+   overflow-y:scroll;
+   height:400px;
+   display:block;
+}
+#table1 th{position: sticky;}
 #ballScore{
     width: 40px;
 }
- #gameFrames td, #frameScores td{
+#gameFrames td, #frameScores td{
     width: 80px;
     height: 29px;
     font-size: 20px;
-        padding:12px;
+    padding:12px;
 }
 #fLabel{
     margin-left: -100px;
     margin-top: 15px
 }
+.highlighted{
+    background-color: greenyellow;
+}
+.aManage_btn {
+    background-color: black;
+    color: white;
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    text-decoration: none;
+    width: 20%;
+    text-align: center;
+}
+.createTeam{
+    padding: 15px;
+    margin-top: 100px;
+    margin-left: 25.33%;
+    width: 50%;
+    border: 2px solid black;
+}
+
