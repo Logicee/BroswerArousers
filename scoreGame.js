@@ -103,7 +103,12 @@ function refreshFrames() {
             frameNum++;
         } else if (frames[frameNum].innerHTML == "") {
             frames[frameNum].innerHTML = score;
-
+       //if on lastframe and previous ball score was a strike, disable enter score button and enable submit score button
+            if (frameNum == 10 && balls[i-1] == "/") {
+                
+                document.querySelector("#enterBall").setAttribute("disabled", false);
+                document.querySelector("#submitScore").removeAttribute("disabled");
+            }
         } else {
             //add score onto game frame string
             frames[frameNum].innerHTML += " " + score;
@@ -124,7 +129,7 @@ function refreshFrames() {
     }//end for i
 
 
-    //if higihlight current frame user is on and if not on bonus frame, do not display the bonus frame
+    //highlight current frame user is on  and if not on  the bonus frame, do not display the bonus frame.
     if (frameNum < 10) {
         frames[frameNum].classList.add("highlightFrame");
         frames[10].classList.add("hidden");
