@@ -96,6 +96,7 @@ function buildTable2(text){
     theTable.innerHTML = html;
 }
 function fillTheTeam(text){
+    console.log(text);
     let url="api/getAllPlayers.php";
     //convery team number form string to int
     let teamNum= parseInt(text);
