@@ -2,7 +2,7 @@
 
 $projectRoot = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/BABowlingApp';
 require_once $projectRoot . '/db/dbconnection.php';
-
+require_once $projectRoot . '/db/GameAccessor.php';
 
 
 $obj = file_get_contents('php://input');
@@ -23,6 +23,10 @@ try {
     $results = json_encode($temp, JSON_NUMERIC_CHECK);
     $stmt->closeCursor();
 
+    //update the next round
+    $ga = new GameAccessor();
+    $f = $ga->assignMatches($id);
+    
     echo $results;
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
