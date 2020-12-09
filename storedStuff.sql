@@ -85,14 +85,9 @@ CREATE TRIGGER updateScore AFTER UPDATE ON game FOR EACH ROW BEGIN
 DECLARE id int;
 SET id = old.matchid;
 
-IF (SELECT score FROM matchup WHERE matchid = id) IS NULL THEN
-	UPDATE matchup SET score = 0
+IF new.gamestateid = 'COMPLETE' THEN
+	UPDATE matchup SET score = (SELECT sum(score) FROM game WHERE matchid = id)
 		WHERE matchid = id;
 END IF;
-
-UPDATE matchup SET score = new.score + score
-	WHERE matchid = id;
-    
--- UPDATE game SET gamestateid = 'COMPLETE';
 
 END!
