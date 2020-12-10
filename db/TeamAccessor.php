@@ -27,6 +27,9 @@ class TeamAccessor {
 
     }
 
+    public function getAllTeams(){
+        return $this->getTeamsByQuery("select * from team");
+    }
   
     private function getTeamsByQuery($selectString) {
         $result = [];
@@ -55,7 +58,7 @@ class TeamAccessor {
         }
 
         return $result;
-    }//end getGamesByQuery()
+    }//end getTeamByQuery()
     
     public function getTeamByID($id) {
   
@@ -84,4 +87,5 @@ class TeamAccessor {
     return $team;
     }
 }//end class
+
 
