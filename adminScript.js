@@ -3,8 +3,12 @@ window.onload = function () {
 
     getAllItems();
     // add event handler for selections on the table
-    document.querySelector("#table").addEventListener("click", handleRowClick);
+    document.querySelector("#mtable").addEventListener("click", handleRowClick);
     document.querySelector("#clrSelection").addEventListener("click", clearSelections);
+    document.querySelector('#deleteTeam').addEventListener("click", deleteTeam);
+    document.querySelector("#updateTeam").addEventListener("click", setTeamName);
+    document.querySelector("#upTeam").addEventListener("click", updateTeam);
+    document.querySelector("#mPlayers").addEventListener("click",managePlayer);
 };
 
 function handleRowClick(e) {
@@ -16,6 +20,9 @@ function handleRowClick(e) {
     document.querySelector("#createTeam").removeAttribute("enabled", "disabled");
     document.querySelector("#deleteTeam").removeAttribute("disabled", "enabled");
     document.querySelector("#updateTeam").removeAttribute("disabled", "enabled");
+    document.querySelector("#mPlayers").removeAttribute("disabled", "enabled");
+    document.querySelector("#mPlayers").classList.remove("tempD");
+    document.querySelector("#mPlayers").classList.add("aManage_btn");
 }
 
 function clearSelections() {
@@ -44,23 +51,24 @@ function getAllItems() {
     xmlhttp.send();
 
     // disable Delete and Update buttons
-//    document.querySelector("#deleteTeam").setAttribute("disabled", "disabled");
-//    document.querySelector("#updateTeam").setAttribute("disabled", "disabled");
+    document.querySelector("#deleteTeam").setAttribute("enabled", "disabled");
+    document.querySelector("#updateTeam").setAttribute("enabled", "disabled");
 }
 
 function buildTable(text) {
     //{"Number":1,"CarName":" Chevrolet Corvette","Year":2020,"Price":92398}
     let arr = JSON.parse(text); // get JS Objects
-    let theTable = document.querySelector("table");
-    let html = theTable.querySelector("tr").innerHTML;
+    let theTable = document.querySelector("#mtable");
+    let html = "";
+    //  let html = theTable.querySelector("tr").innerHTML;
     console.log(arr.length + "array length");
     for (let i = 0; i < arr.length; i++) {
         let row = arr[i];
         html += "<tr>";
         console.log(row);
-        html += "<td>" + row.teamID + "</td>";
-        html += "<td>" + row.teamName + "</td>";
-        html += "<td>" + row.playerCount + "</td>";
+        html += "<td scope='row'>" + row.teamID + "</td>";
+        html += "<td scope='row'>" + row.teamName + "</td>";
+        html += "<td scope='row'>" + row.playerCount + "</td>";
         html += "</tr>";
     }
     lastTeamID = arr[arr.length - 1].teamID;
@@ -69,9 +77,87 @@ function buildTable(text) {
 }
 
 //called when clicked on create team
-function setTeamID(){
+function setTeamID() {
     document.querySelector("#setTeamID").value = lastTeamID;
 }
+
+function deleteTeam() {
+    let row = document.querySelector(".highlighted");
+    let id = Number(row.querySelectorAll("td")[0].innerHTML);
+    let numPlayers = Number(row.querySelectorAll("td")[2].innerHTML);
+
+    //console.log("The number of players : " + numPlayers);
+    // AJAX
+    if (numPlayers <= 0) {
+        let url = "api/deleteTeam.php";
+        let xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                let resp = xmlhttp.responseText;
+                console.log(resp);
+                if (resp !== "1") {
+                    alert("Item NOT deleted.");
+
+                } else {
+                    alert("Item deleted.");
+                }
+                console.log(resp);
+                getAllItems();
+            }
+        };
+        xmlhttp.open("POST", url, true);
+        xmlhttp.send(id);
+    } else {
+        alert("Team with ID: " + id + " cannot be deleted. Must have 0 players.");
+    }
+
+}
+
+function setTeamName() {
+    let row = document.querySelector(".highlighted");
+    let id = Number(row.querySelectorAll("td")[0].innerHTML);
+    let teamName = row.querySelectorAll("td")[1].innerHTML;
+
+    document.querySelector("#teamN").value = teamName;
+    console.log(teamName + "************//////*/*/*/*");
+}
+
+function updateTeam() {
+    let row = document.querySelector(".highlighted");
+    let id = Number(row.querySelectorAll("td")[0].innerHTML);
+    let teamName = document.querySelector("#teamN").value;
+    console.log(id +""+ teamName);
+    let obj = {
+        "Team_ID": id,
+        "TeamName": teamName
+    };
+    let url = "api/updateTeam.php";
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            let resp = xmlhttp.responseText;
+            console.log(resp);
+            if (resp !== "1") {
+                alert("Item Updated.");
+            } else {
+                alert("Item not Updated.");
+            }
+            getAllItems();
+         //   hideUpdatePanel();
+        }
+    };
+    xmlhttp.open("POST", url, true); // must be POST
+    xmlhttp.send(JSON.stringify(obj));
+ //   console.log("Team ID from updateTeam: " + id);
+}
+
+function managePlayer(){
+    let row = document.querySelector(".highlighted");
+    let id = Number(row.querySelectorAll("td")[0].innerHTML);
+    console.log(id);
+    document.querySelector("#hiddenID").value = id;
+}
+
 
 
 
