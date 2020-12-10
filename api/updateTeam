@@ -1,0 +1,18 @@
+<?php
+$projectRoot = $_SERVER['DOCUMENT_ROOT'] . '/BABowlingApp';
+require_once ($projectRoot . '/accessors/TeamAccessor.php');
+require_once ($projectRoot . '/entity/Team.php');
+require_once ($projectRoot . '/ChromePhp.php');
+
+$body = file_get_contents('php://input');
+$contents1 = json_decode($body, true);
+
+$TeamObj = new Team($contents1['Team_ID'], $contents1['TeamName'],0);
+//ChromePhp::log($contents1['Team_ID'] +"THis is the chrome logger"+ $contents1['TeamName']);
+try {
+    $mia = new TeamAccessor();
+    $success = $mia->updateItem($TeamObj);
+    echo $success;
+} catch (Exception $e) {
+    echo "ERROR " . $e->getMessage();
+}
