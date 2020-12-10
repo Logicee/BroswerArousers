@@ -1,15 +1,18 @@
 <?php
 require_once 'dbconnection.php';
-require_once 'entity/Game.php';
-include 'ChromePhp.php';
+$projectRoot = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/BABowlingApp';
+require_once ($projectRoot . '/entity/Game.php');
+;
+
 class GameAccessor {
 
     private $getGamesByStatusStatementString = "select * from game where gameStateID IN(\"AVAILABLE\",\"INPROGRESS\")";
-       private $scheduledGameInfoString = "select g.gameID, g.matchID, g.gameNumber, t.teamName ,g.gameStateID from game g, team t, matchup m where g.gameStateID IN('AVAILABLE','INPROGRESS') AND g.matchID = m.matchID AND m.teamID = t.teamID";
-
+    private $getGamesByComplete="SELECT * from game WHERE gameStateID='COMPLETE'";
+   
     private $conn = NULL;
     private $getGamesByStatusStatement = NULL;
-private $scheduledGameInfoStatement = NULL;
+ 
+
 
     public function __construct() {
         $connect = new dbConnect();
@@ -21,11 +24,6 @@ private $scheduledGameInfoStatement = NULL;
         $this->getGamesByStatusStatement = $this->conn->prepare($this->getGamesByStatusStatementString);
         if (is_null($this->getGamesByStatusStatement)) {
             throw new Exception("bad statement: '" . $this->getGamesByStatusStatement . "'");
-        }
-        
-               $this->getGamesByStatusStatement = $this->conn->prepare($this->scheduledGameInfoString);
-        if (is_null($this->scheduledGameInfoStatement)) {
-            throw new Exception("bad statement: '" . $this->scheduledGameInfoStatement . "'");
         }
         //add additional prepares here
 
@@ -65,48 +63,15 @@ private $scheduledGameInfoStatement = NULL;
     }//end getGamesByQuery()
     
     public function getScheduledGames() {
-         $result = [];
-     try {
-            $stmt = $this->conn->prepare($this->scheduledGameInfoString);
-            $stmt->execute();
-            $dbresults = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
-            foreach ($dbresults as $record) {
-                
-            }
-                $record['g.gameID'];
-                 $record['g.matchID'];
-                $record['g.gameNumber'];
-                $record['g.gameStateID'];
-                $record['t.teamName'];
-                ChromePhp::log($teamName);
-                system($teamName);
-            $aRecord = [$gameID, $matchID, $gameNumber,$teamName,$gameStateID];
-                array_push($result, $aRecord);
-            }
+  
+        return $this->getGamesByQuery("select * from game where gameStateID IN(\"AVAILABLE\",\"INPROGRESS\")");
         
-        catch (Exception $e) {
-            $result = [];
-        }
-        finally {
-            if (!is_null($stmt)) {
-                $stmt->closeCursor();
-            }
-        }    
-        return $result;
     }
-    
-    
-    
-    
-    public function updateGameByID($id){
+    public function getCompleteGames() {
+  
+        return $this->getGamesByQuery($this->getGamesByComplete);
         
-        
-        
-        
-        
-        
-    }//updateGameByID()
+    }
 
     
 }//end class
