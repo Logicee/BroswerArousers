@@ -33,14 +33,19 @@
                     
                     <table class="table table-responsive border table-hover text-center" id="table1">
                         <thead class="thead-dark">
-                            <tr>
-                                <th>Team ID</th>
-                                <th>Team Name</th>
-                                <th>Player Count</th>
-                              
+                            <tr class="">
+                                <th class="w-50">
+                                    Team ID
+                                </th>
+                                <th class="w-50">
+                                    Team Name
+                                </th>
                             </tr>
                            
                         </thead>
+                        <tbody id="theTeams">
+                            
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -52,9 +57,12 @@
                           <thead class="thead-dark">
                              
                               <tr>
-                                  <th>Player ID</th><th>Player Name</th><th>Hometown</th><th>Province</th>
+                                  <th class="w-25">Player ID</th><th class="w-50">Player Name</th><th class="w-20">Hometown</th><th class="w-20">Province</th>
                               </tr>
                           </thead>
+                          <tbody id="thePlayers">
+                              
+                          </tbody>
                       </table>
                       
                   </div></div>
