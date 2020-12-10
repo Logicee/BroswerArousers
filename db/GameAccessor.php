@@ -98,13 +98,11 @@ class GameAccessor {
     function assignMatches($gameid){
         try{
         //check if the rounds are ranked
-        $this->conn->prepare("update team set teamname = 'fj'")->execute();
         //get amount of matches in round vs ranked matches
         $roundStmt = $this->conn->prepare("SELECT roundid FROM matchup WHERE matchid = "
                 . "(SELECT matchid FROM game WHERE gameid = $gameid)");
         $roundStmt->execute();
         $round = $roundStmt->fetch()[0];
-        $this->conn->prepare("update team set teamname = 'fag'")->execute();
         $set1 = $this->conn->prepare("SELECT count(*) FROM matchup WHERE roundid ='$round'");
         $set1->execute();
         $count1 = $set1->fetch()[0];
@@ -114,9 +112,8 @@ class GameAccessor {
         $count2 = $set2->fetch()[0];
 
         if ($count1 == $count2){
-            $this->conn->prepare("update team set teamname = 're'")->execute();
+            
             if ($round == 'QUAL'){
-                $this->conn->prepare("update team set teamname = 'psp'")->execute();
                 $winnersStmt = $this->conn->prepare("SELECT teamid FROM matchup WHERE roundid = '$round'"
                     . " AND ranking <= 16"
                     . " ORDER BY ranking");
@@ -133,7 +130,6 @@ class GameAccessor {
                     $this->conn->prepare("update matchup SET teamID = ". $winners[$j++][0] ." WHERE matchID = ". ($startid+$i))->execute();
                 }
                 
-                    $this->conn->prepare("update team set teamname = 'cd'")->execute();
                 
                 //bottom 8 per matchgroup
                 for($i=1, $j=8; $i<16; $i+=2){
@@ -142,36 +138,65 @@ class GameAccessor {
                 $this->conn->prepare("update game SET gamestateid = 'AVAILABLE' WHERE matchid in(SELECT matchid FROM matchup WHERE roundid = 'SEED1')")->execute();
                 
                 shuffle($winners);
-                $startStmt = $this->conn->prepare("SELECT min(matchid) FROM matchup WHERE roundid = 'SEED1'");
+                $startStmt = $this->conn->prepare("SELECT min(matchid) FROM matchup WHERE roundid = 'RAND1'");
                 $startStmt->execute();
                 $startid = $startStmt->fetch()[0];
                 for($i=0; $i<16; $i++){
-                    $this->conn->prepare("update matchup SET teamid = ".$winners[$i]." WHERE matchid = ".$startid+$i)->execute();
+                    $this->conn->prepare("update matchup SET teamid = ".$winners[$i][0]." WHERE matchid = ".($startid+$i))->execute();
                 }
-                $this->conn->prepare("update game SET gamestateid = 'AVAILABLE' WHERE matchid in(SELECT matchid FROM matchup WHERE roundid = 'SEED1')")->execute();
+                $this->conn->prepare("update game SET gamestateid = 'AVAILABLE' WHERE matchid in(SELECT matchid FROM matchup WHERE roundid = 'RAND1')")->execute();
                 
-            } elseif (substr($round, 0, 4) == 'RAND') {
-                $winners = shuffle($this->conn->prepare("SELECT teamid FROM matchup WHERE roundid =".$round
-                    . " AND ranking = 1")->execute());
-                $next = (int)substr($round, -1) +1;
-                $startid = $this->conn->prepare("SELECT min(matchid) FROM matchup WHERE roundid = 'RAND".$next."'")->execute();
-                for($i=0; $i< sizeof($winners); $i++){
-                    $this->conn->prepare("update matchup SET teamid = ".$winners[$i]." WHERE matchid = ".$startid+$i)->execute();
+            } elseif (substr($round, -1) == '4'){
+                $seedStmt = $this->conn->prepare("SELECT count(*) FROM matchup WHERE roundid = 'seed4' AND ranking is not null");
+                $randStmt = $this->conn->prepare("SELECT count(*) FROM matchup WHERE roundid = 'rand4' AND ranking is not null");
+                $randStmt->execute();
+                $seedStmt->execute();
+                if($randStmt->fetch()[0] == 2 && $seedStmt->fetch()[0] == 2){
+                    $win1Stmt = $this->conn->prepare("SELECT teamid FROM matchup WHERE roundid = 'rand4' AND ranking = 1");
+                    $win2Stmt = $this->conn->prepare("SELECT teamid FROM matchup WHERE roundid = 'seed4' AND ranking = 1");
+                    $win1Stmt->execute();
+                    $win2Stmt->execute();
+                    $winner1 = $win1Stmt->fetch()[0];
+                    $winner2 = $win2Stmt->fetch()[0];
+                    $this->conn->prepare("update matchup set teamid = $winner1 WHERE matchid = 111")->execute();
+                    $this->conn->prepare("update matchup set teamid = $winner2 WHERE matchid = 112")->execute();
+                    $this->conn->prepare("update game SET gamestateid = 'AVAILABLE' WHERE matchid in(SELECT matchid from matchup WHERE roundid = 'FINAL')")->execute();
                 }
+            }elseif (substr($round, 0, 4) == 'RAND') {
+                
+                $winnerStmt = $this->conn->prepare("SELECT teamid FROM matchup WHERE roundid = '$round'"
+                    . " AND ranking = 1");
+                $winnerStmt->execute();
+                $winners = $winnerStmt->fetchAll();
+                shuffle($winners);
+                $next = (int)substr($round, -1) +1;
+                $startStmt = $this->conn->prepare("SELECT min(matchid) FROM matchup WHERE roundid = 'RAND$next'");
+                $startStmt->execute();
+                $startid = $startStmt->fetch()[0];
+                for($i=$startid, $j=0; $i< sizeof($winners)+$startid; $i++){
+                    $this->conn->prepare("update matchup SET teamid = ".$winners[$j++][0]." WHERE matchid = ".$i)->execute();
+                }
+                $this->conn->prepare("update game SET gamestateid = 'AVAILABLE' WHERE matchid in(SELECT matchid from matchup WHERE roundid = 'RAND$next')")->execute();
             } elseif(substr($round, 0, 4) == 'SEED'){
-                $winners = $this->conn->prepare("SELECT teamid FROM matchup WHERE roundid ='$round'"
+                
+                $winnerStmt = $this->conn->prepare("SELECT teamid FROM matchup WHERE roundid = '$round'"
                     . " AND ranking = 1"
-                    . " ORDER BY matchgroup")->execute();
+                    . " ORDER BY matchgroup");
+                $winnerStmt->execute();
+                $winners = $winnerStmt->fetchAll();
                 $next = (int)substr($round, -1) +1;
-                //top half in each matchgroup
-                $startid = $this->conn->prepare("SELECT min(matchid) FROM matchup WHERE roundid = 'SEED".$next."'")->execute();
-                for($i=0, $j=0; $i<sizeof($winners); $i+=2){
-                    $this->conn->prepare("update matchup SET teamid = ".$winners[$i]." WHERE matchid = ".$startid+$i)->execute();
+                //top half in each round
+                $startStmt = $this->conn->prepare("SELECT min(matchid) FROM matchup WHERE roundid = 'SEED$next'");
+                $startStmt->execute();
+                $startid = $startStmt->fetch()[0];
+                for($i=$startid, $j=0; $i<sizeof($winners)+$startid; $i+=2){
+                    $this->conn->prepare("update matchup SET teamid = ".$winners[$j++][0]." WHERE matchid = ".$i)->execute();
                 }
-                //bottom half per matchgroup
-                for($i=1, $j=sizeof($winners); $i<sizeof($winners); $i+=2){
-                    $this->conn->prepare("update matchup SET teamid = ".$winners[$i]." WHERE matchid = ".$startid+$i)->execute();
+                //bottom half per round
+                for($i=$startid+1, $j=sizeof($winners)/2; $i<sizeof($winners)+$startid; $i+=2){
+                    $this->conn->prepare("update matchup SET teamid = ".$winners[$j++][0]." WHERE matchid = ".$i)->execute();
                 }
+                $this->conn->prepare("update game SET gamestateid = 'AVAILABLE' WHERE matchid in(SELECT matchid from matchup WHERE roundid = 'SEED$next')")->execute();
             }
         }
         } catch (PDOException $e){
