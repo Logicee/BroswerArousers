@@ -1,7 +1,7 @@
 <?php
 
 $projectRoot = $_SERVER['DOCUMENT_ROOT'] . '/BABowlingApp';
-require_once ($projectRoot . '/accessors/TeamAccessor.php');
+require_once ($projectRoot . '/db/TeamAccessor.php');
 require_once ($projectRoot . '/entity/Team.php');
 require_once ($projectRoot . '/ChromePhp.php');
 // reading the HTTP request body
