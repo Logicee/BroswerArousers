@@ -10,6 +10,9 @@ and open the template in the editor.
         <title></title>
     </head>
     <body>
+        <form action="guestIndex.php">
+        <button type="submit">Guest</button>
+        </form>
         <form action="scheduledGames.php">
         <button type="submit">ScoreKeeper</button>
         </form>
