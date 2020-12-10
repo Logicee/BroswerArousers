@@ -1,5 +1,5 @@
 <?php
-require_once 'accessors/TeamAccessor.php';
+require_once 'db/TeamAccessor.php';
 try {
     $ta = new TeamAccessor();
     $team = $ta->getScheduledGames(); //are objects
