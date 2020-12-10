@@ -1,7 +1,7 @@
 
 <?php
 
-require_once 'accessors/MatchupAccessor.php';
+require_once 'db/MatchupAccessor.php';
 require_once 'entity/Matchup.php';
 
 $matchID = file_get_contents('php://input');
