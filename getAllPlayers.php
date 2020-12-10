@@ -1,6 +1,6 @@
 <?php
 $projectRoot = filter_input(INPUT_SERVER, 'DOCUMENT_ROOT') . '/BABowlingApp';
-require_once ($projectRoot . '/accessors/PlayerAccessor.php');
+require_once ($projectRoot . '/db/PlayerAccessor.php');
 $data = file_get_contents('php://input');
 $teamNum=intval($data);
 
