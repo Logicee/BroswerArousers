@@ -11,21 +11,27 @@
  *
  * @author danie
  */
-class Player {
-    
+class Player implements JsonSerializable {
+    private $playerID;
     private $FName;
     private $LName;
     private $province;
     private $homeTown;
-    private $ID;
+    private $teamID;
     
-    function __construct($FName, $LName, $province, $homeTown, $ID) {
+    function __construct($playerID,$FName, $LName, $province, $homeTown, $teamID) {
+        $this->playerID = $playerID;
         $this->FName = $FName;
         $this->LName = $LName;
         $this->province = $province;
         $this->homeTown = $homeTown;
-        $this->ID = $ID;
+        $this->teamID = $teamID;
     }
+    
+      function getPlayerID() {
+        return $this->playerID;
+    }
+    
     
     function getFName() {
         return $this->FName;
@@ -43,9 +49,11 @@ class Player {
         return $this->homeTown;
     }
 
-    function getID() {
-        return $this->ID;
+    function getTeamID() {
+        return $this->teamID;
     }
-
+    public function jsonSerialize() {
+        return get_object_vars($this);
+    }
 
 }
