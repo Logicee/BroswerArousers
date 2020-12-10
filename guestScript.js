@@ -15,16 +15,22 @@ window.onload = function () {
     
     
 };
-function handleRowClick(e){
-    clearSelections();
-    e.target.parentElement.classList.add("highlighted");
-    
-   
-let id= e.target.parentElement.firstChild.innerHTML;
-console.log(id);
-fillTheTeam(id);
 
+let teamID = 0;
+
+function handleRowClick(e){
+    var element = e.target;
+    clearSelections();
+
+       if (element.tagName == "TD") {
+        e.target.parentElement.classList.add("highlighted");
     
+            teamID = e.target.parentElement.firstChild.innerHTML;
+console.log(teamID);
+getTeamPlayers();
+       
+    }
+      
 }
 function clearTheTable(){
  let theTable = document.querySelector("table");
@@ -48,18 +54,23 @@ function getAllTeams()
             if (resp.search("ERROR") >= 0) {
                 alert("oh no...");
             } else {
-                buildTable(xmlhttp.responseText);
+                buildTeamTable(xmlhttp.responseText);
             }
         }
     };
     xmlhttp.open("GET", url, true);
     xmlhttp.send();}
-function buildTable(text) {
+
+
+function buildTeamTable(text) {
   
-    let arr = JSON.parse(text); // get JS Objects
+    let arr = JSON.parse(text);
     
      let theTable = document.getElementById("table1");
-    let html = theTable.querySelector("tr").innerHTML;
+    let html = "" ;
+    
+    
+    
     console.log(arr.length + "array length");
     for (let i = 0; i < arr.length; i++) {
         let row = arr[i];
@@ -67,41 +78,42 @@ function buildTable(text) {
        // console.log(row);
         html += "<td>" + row.teamID + "</td>";
         html += "<td>" + row.teamName + "</td>";
-        html += "<td>" + row.playerCount + "</td>";
         html += "</tr>";
     }
     lastTeamID = arr[arr.length - 1].teamID;
-    theTable.innerHTML = html;
+    theTable.querySelector("#theTeams").innerHTML = html;
     
 }
-function buildTable2(text){
- let arr = JSON.parse(text); // get JS Objects
+function buildPlayerTable(text){
+ let arr = JSON.parse(text);
    console.log(arr);
     let theTable = document.getElementById("table2");
-    let html = theTable.querySelector("tr").innerHTML;
+    let html = "";
     console.log(text.length + "array length");
+   
     for (let i = 0; i < arr.length; i++) {
         let row = arr[i];
         html += "<tr>";
         console.log(row);
         
-        html += "<td>" + row.FName + "</td>";
-        html += "<td>" + row.LName + "</td>";
+        html += "<td>" + row.playerID + "</td>";
+        html += "<td>" + row.FName + " " + row.LName + "</td>";
+       html += "<td>" + row.homeTown + "</td>";
         html += "<td>" + row.province + "</td>";
-        html += "<td>" + row.homeTown + "</td>";
-        html += "<td>" + row.ID + "</td>";
         html += "</tr>";
     }
-    lastTeamID = text[text.length - 1].teamID;
-    theTable.innerHTML = html;
+    theTable.querySelector("tbody").innerHTML = html;
+  
 }
-function fillTheTeam(text){
-    console.log(text);
-    let url="api/getAllPlayers.php";
-    //convery team number form string to int
-    let teamNum= parseInt(text);
+
+//will list players from team selected
+function getTeamPlayers(){
+      
+    let url="api/getPlayersByTeamID.php";
+    //convert team number from string to int
+    let teamNum= parseInt(teamID);
     let xmlhttp= new XMLHttpRequest();
-    console.log("running");
+    console.log(teamNum);
     xmlhttp.onreadystatechange= function(){
         if(xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             let resp = xmlhttp.responseText;
@@ -109,11 +121,15 @@ function fillTheTeam(text){
             if (resp.search("ERROR") >= 0) {
                 alert("oh no...");
             } else { console.log(xmlhttp.responseText);
-                buildTable2(xmlhttp.responseText);
+                buildPlayerTable(xmlhttp.responseText);
             }
         }
     };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send(teamNum);}
+    xmlhttp.open("POST", url, true);
+    xmlhttp.send(teamID.toString());
+    
+    
+}//
+
     
     
