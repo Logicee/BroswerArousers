@@ -1,5 +1,5 @@
 <?php
-require_once 'accessors/GameAccessor.php';
+require_once 'db/GameAccessor.php';
 try {
     $ga = new GameAccessor();
     $scheduledGames = $ga->getScheduledGames(); //are objects
