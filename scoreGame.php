@@ -22,7 +22,7 @@ and open the template in the editor.
                 <h1>Bowling Tournament</h1>
             </div>
             <div class="col-1-auto">
-                <img id="logo" class="img-thumbnail rounded float-right" alt="Bowling App logo"/>
+                <img id="logo" src="bowling.png" class="img-thumbnail rounded float-right" alt="Bowling App logo"/>
             </div>
         </div>
 
