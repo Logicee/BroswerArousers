@@ -11,7 +11,7 @@
         <title>Bowling App Scheduled Games</title>
     </head>
     <body>
-        
+        <form action="index.php">  <button type="submit">LogOut</button></form>
         <div class=" justify-content-center row mt-2">
             <div class="col-11">
                 <h1>Bowling Tournament</h1>
