@@ -14,7 +14,7 @@
 
     <h2>Please select one of the following options: </h2>
     
-        <button id="standing">View Tournament Standings</button><button id="recap">View Recap</button><button id="payout">View Payouts</button>
+       <form action="tournamentStandings.php" action="POST"> <button id="standing">View Tournament Standings</button></form><button id="recap">View Recap</button><button id="payout">View Payouts</button>
         <div id="container">
             <div id="standingtab" class="hide floater">STANDINGS</div> <div id="recaptab"class="hide floater"><input type='text'></input><button type='submit' id='teamSelect'>Go!</button></div><div id="payouttab"class="hide floater">PAYOUTS</div></div>
  
