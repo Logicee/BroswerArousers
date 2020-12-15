@@ -24,8 +24,8 @@
             <div class="col-auto">
                 <h2 class="">Games List</h2>
                 <form action="scoreGame.php" method="POST">
-                  
-                    
+
+
                     <table id="scheduledGamesTable" class="table table-responsive border table-hover text-center">
                     <thead class="thead-dark">
                     <tr>
@@ -55,7 +55,7 @@
                         <td>Cosmos</td>
                         <td>In Progress</td>
                     </tr>
-                       
+
                     </tbody>
                 </table>
             </div>
