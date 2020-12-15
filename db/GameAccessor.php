@@ -149,8 +149,8 @@ class GameAccessor {
                 
                 
                 //bottom 8 per matchgroup
-                for($i=1, $j=8; $i<16; $i+=2){
-                    $this->conn->prepare("update matchup SET teamid = ".$winners[$j++][0]." WHERE matchid = ".($startid+$i))->execute();
+                for($i=1, $j=16; $i<16; $i+=2){
+                    $this->conn->prepare("update matchup SET teamid = ".$winners[$j--][0]." WHERE matchid = ".($startid+$i))->execute();
                 }
                 $this->conn->prepare("update game SET gamestateid = 'AVAILABLE' WHERE matchid in(SELECT matchid FROM matchup WHERE roundid = 'SEED1')")->execute();
                 
@@ -210,8 +210,8 @@ class GameAccessor {
                     $this->conn->prepare("update matchup SET teamid = ".$winners[$j++][0]." WHERE matchid = ".$i)->execute();
                 }
                 //bottom half per round
-                for($i=$startid+1, $j=sizeof($winners)/2; $i<sizeof($winners)+$startid; $i+=2){
-                    $this->conn->prepare("update matchup SET teamid = ".$winners[$j++][0]." WHERE matchid = ".$i)->execute();
+                for($i=$startid+1, $j=sizeof($winners); $i<sizeof($winners)+$startid; $i+=2){
+                    $this->conn->prepare("update matchup SET teamid = ".$winners[$j--][0]." WHERE matchid = ".$i)->execute();
                 }
                 $this->conn->prepare("update game SET gamestateid = 'AVAILABLE' WHERE matchid in(SELECT matchid from matchup WHERE roundid = 'SEED$next')")->execute();
             }
