@@ -22,7 +22,10 @@
         </div>
           <div> <h2>Teams</h2></div>
           <form action="disha.php"><button type="submit">More Options</button></form>
+          
           <button id="QR" disabled>View all rounds</button>
+          <form action="tournamentStandingsPage.php"><button type="submit">View Tournament Standings</button></form>
+          <form action="disha.php"><button type="submit">View Payouts</button></form>
 
             
             
