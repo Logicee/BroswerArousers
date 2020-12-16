@@ -73,6 +73,9 @@ class GameAccessor {
         
     }
 
+    public function getGameState() {
+        return $this->getGamesByQuery("select * from game");
+    }
     
 }//end class
 
