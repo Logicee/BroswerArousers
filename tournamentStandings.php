@@ -31,7 +31,7 @@
         </div>
                <div class=" justify-content-center row mt-2 mb-4 border-bottom">
             <div class="col-12">
-                <form action="disha.php"><button class="mb-2">Back</button></form>
+                <form action="guestIndex.php"><button class="mb-2">Back</button></form>
             </div>
          
         </div>
