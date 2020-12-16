@@ -5,17 +5,26 @@
 .highlightFrame{background-color: lightblue;}
 .hidden {visibility: hidden;}
 .bonusColor{background-color: greenyellow;}
-#tabs{float:left; width:500px;}
-.border{float:left;width:500px;}
 /*body{
-    background-color: rgb(160,160,160);
+    background-image: url("bgIMG.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-sizing: border-box;
 }*/
-#table3{width:1100px;}
+body{
+    margin: 0;
+    background-image: url("bgIMG.jpg");
+    color: whitesmoke;
+}
+#mtable{
+    background-color: #606060;
+    color: whitesmoke;
+}
 #scheduledGamesTable{
     height: 540px;
     box-sizing:border-box;
 }
-thead{ position:sticky;
+thead{
     box-sizing: border-box;
 
 }
@@ -24,12 +33,7 @@ th {
     top: -1px;
 }
 #gameFrames td{border: black thin solid;}
-#table1{
-   overflow-y:scroll;
-   height:400px;
-   display:block;
-}
-#table1 th{position: sticky;}
+
 #ballScore{
     width: 40px;
 }
@@ -44,7 +48,7 @@ th {
     margin-top: 15px
 }
 .highlighted{
-    background-color: greenyellow;
+    background-color: black;
 }
 .aManage_btn {
     background-color: black;
@@ -60,7 +64,82 @@ th {
     padding: 15px;
     margin-top: 100px;
     margin-left: 25.33%;
+    margin-bottom: 50px;
+    width: 50%;
+    border: 2px solid black;
+    background-color: #606060;
+    color: whitesmoke;
+}
+.createPlayer{
+    padding: 15px;
+    margin-top: 100px;
+    margin-left: 25.33%;
     width: 50%;
     border: 2px solid black;
 }
+.editTeam{
+    margin: 20px;
+    border: 1px solid black;
+    padding: 15px;
+}
+.tempD{
+    background-color: #211a23;
+    color: white;
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    text-decoration: none;
+    width: 20%;
+    text-align: center;
+}
+.a_btnCT{
+    background-color: black;
+    color: white;
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    text-decoration: none;
+    width: 25%;
+    text-align: center;
+    float: left;
+}
+#a_btnCT{
+    background-color: black;
+    color: whitesmoke;
+    line-height: 40px;
+    text-decoration: none;
+    width: 25%;
+    text-align: center;
+    float: left;
+    margin-bottom: 20px;
+}
+#mAT{
+    float: left;
+    width: 75%;
+    margin-top: 10px;
+}
 
+.createTeam form{
+    margin-bottom: 70px;
+}
+h4{
+    color: black;
+}
+.editTeam label{
+    color: black;
+}
+#addBtn{
+    background-color: black;
+    color: whitesmoke;
+    line-height: 40px;
+    text-decoration: none;
+    width: 25%;
+    text-align: center;
+    float: left;
+    margin-bottom: 20px;
+}
+.createPlayer{
+    background-color: #606060;
+    color: whitesmoke;
+    padding-bottom: 70px;
+}
