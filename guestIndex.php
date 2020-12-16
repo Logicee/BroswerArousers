@@ -21,7 +21,10 @@
             </div>
         </div>
           <div> <h2>Teams</h2></div>
-          <form action="disha.php"><button type="submit">Dishas page</button></form>
+          <form action="disha.php"><button type="submit">More Options</button></form>
+          <button id="QR" disabled>View all rounds</button>
+
+            
             
         <div class="mainTable">
          
@@ -50,6 +53,12 @@
                 </div>
             </div>
             </div>
+            <div class="row justify-content-center"><table class="table table-responsive border table-hover text-center" id="table3">
+                          
+                          <tbody id="teams">
+                              
+                          </tbody>
+                  </table></div>
           <div class="secondTable">
               <div class="row justify-content-center">
                   <div class="col-auto">
@@ -66,7 +75,8 @@
                       </table>
                       
                   </div></div>
-              </div></div>
+              </div> 
+                     
        
     </body>
 </html>
