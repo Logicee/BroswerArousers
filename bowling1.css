@@ -10,7 +10,7 @@
 /*body{
     background-color: rgb(160,160,160);
 }*/
-
+#table3{width:1100px;}
 #scheduledGamesTable{
     height: 540px;
     box-sizing:border-box;
