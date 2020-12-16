@@ -323,15 +323,15 @@ function getStandings() {
                     } else if (team.roundID == "FINAL") {
 
                         if (team.matchID % 2 != 0) {
-                            finalbrackets[0].querySelector(".team1").innerHTML = team.teamName;
-                            if (team.ranking == 2) {
-                                finalbrackets[0].querySelector(".team1").classList.add("strikethrough");
-                            }
-
-                        } else {
                             finalbrackets[0].querySelector(".team2").innerHTML = team.teamName;
                             if (team.ranking == 2) {
                                 finalbrackets[0].querySelector(".team2").classList.add("strikethrough");
+                            }
+
+                        } else {
+                            finalbrackets[0].querySelector(".team1").innerHTML = team.teamName;
+                            if (team.ranking == 2) {
+                                finalbrackets[0].querySelector(".team1").classList.add("strikethrough");
                             }
                         }
                         if (team.ranking == null) {
