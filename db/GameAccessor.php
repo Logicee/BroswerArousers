@@ -210,7 +210,7 @@ class GameAccessor {
                     $this->conn->prepare("update matchup SET teamid = ".$winners[$j++][0]." WHERE matchid = ".$i)->execute();
                 }
                 //bottom half per round
-                for($i=$startid+1, $j=sizeof($winners); $i<sizeof($winners)+$startid; $i+=2){
+                for($i=$startid+1, $j=sizeof($winners)-1; $i<sizeof($winners)+$startid; $i+=2){
                     $this->conn->prepare("update matchup SET teamid = ".$winners[$j--][0]." WHERE matchid = ".$i)->execute();
                 }
                 $this->conn->prepare("update game SET gamestateid = 'AVAILABLE' WHERE matchid in(SELECT matchid from matchup WHERE roundid = 'SEED$next')")->execute();
