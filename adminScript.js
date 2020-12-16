@@ -1,6 +1,7 @@
 let lastTeamID = 0;
+let chkRes;
 window.onload = function () {
-
+    chkGameState();
     getAllItems();
     // add event handler for selections on the table
     document.querySelector("#mtable").addEventListener("click", handleRowClick);
@@ -8,29 +9,38 @@ window.onload = function () {
     document.querySelector('#deleteTeam').addEventListener("click", deleteTeam);
     document.querySelector("#updateTeam").addEventListener("click", setTeamName);
     document.querySelector("#upTeam").addEventListener("click", updateTeam);
-    document.querySelector("#mPlayers").addEventListener("click",managePlayer);
+    document.querySelector("#mPlayers").addEventListener("click", managePlayer);
+    
 };
 
 function handleRowClick(e) {
     //add style to parent of clicked cell
     clearSelections();
     e.target.parentElement.classList.add("highlighted");
-
+    if (chkRes === true) {
+        document.querySelector("#createTeam").removeAttribute("enabled", "disabled");
+        document.querySelector("#deleteTeam").removeAttribute("disabled", "enabled");
+        document.querySelector("#updateTeam").removeAttribute("disabled", "enabled");
+        document.querySelector("#mPlayers").removeAttribute("disabled", "enabled");
+        document.querySelector("#mPlayers").classList.remove("tempD");
+        document.querySelector("#mPlayers").classList.add("aManage_btn");
+    } 
     // enable Delete and Update buttons
-    document.querySelector("#createTeam").removeAttribute("enabled", "disabled");
-    document.querySelector("#deleteTeam").removeAttribute("disabled", "enabled");
-    document.querySelector("#updateTeam").removeAttribute("disabled", "enabled");
-    document.querySelector("#mPlayers").removeAttribute("disabled", "enabled");
-    document.querySelector("#mPlayers").classList.remove("tempD");
-    document.querySelector("#mPlayers").classList.add("aManage_btn");
+
+
+
 }
+
 
 function clearSelections() {
     let trs = document.querySelectorAll("tr");
     for (let i = 0; i < trs.length; i++) {
         trs[i].classList.remove("highlighted");
     }
-    document.querySelector("#createTeam").removeAttribute("disabled", "enabled");
+    if(chkRes === true){
+        document.querySelector("#createTeam").removeAttribute("disabled", "enabled");
+    } 
+    
 }
 
 function getAllItems() {
@@ -53,6 +63,7 @@ function getAllItems() {
     // disable Delete and Update buttons
     document.querySelector("#deleteTeam").setAttribute("enabled", "disabled");
     document.querySelector("#updateTeam").setAttribute("enabled", "disabled");
+    
 }
 
 function buildTable(text) {
@@ -74,6 +85,7 @@ function buildTable(text) {
     lastTeamID = arr[arr.length - 1].teamID;
     theTable.innerHTML = html;
     setTeamID();
+    
 }
 
 //called when clicked on create team
@@ -126,7 +138,7 @@ function updateTeam() {
     let row = document.querySelector(".highlighted");
     let id = Number(row.querySelectorAll("td")[0].innerHTML);
     let teamName = document.querySelector("#teamN").value;
-    console.log(id +""+ teamName);
+    console.log(id + "" + teamName);
     let obj = {
         "Team_ID": id,
         "TeamName": teamName
@@ -138,25 +150,69 @@ function updateTeam() {
             let resp = xmlhttp.responseText;
             console.log(resp);
             if (resp !== "1") {
-                alert("Item Updated.");
-            } else {
                 alert("Item not Updated.");
+            } else {
+                
+                alert("Item Updated.");
             }
             getAllItems();
-         //   hideUpdatePanel();
+            //   hideUpdatePanel();
         }
     };
     xmlhttp.open("POST", url, true); // must be POST
     xmlhttp.send(JSON.stringify(obj));
- //   console.log("Team ID from updateTeam: " + id);
+    //   console.log("Team ID from updateTeam: " + id);
 }
 
-function managePlayer(){
+function managePlayer() {
     let row = document.querySelector(".highlighted");
     let id = Number(row.querySelectorAll("td")[0].innerHTML);
     console.log(id);
     document.querySelector("#hiddenID").value = id;
 }
+
+function chkGameState() {
+    let url = "api/getGameState.php"; // file name or server-side process name
+    let xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            let resp = xmlhttp.responseText;
+            console.log(resp);
+            if (resp.search("ERROR") >= 0) {
+                alert("oh no Game has already started. No edits allowed");
+            }
+            chkRes = findState(xmlhttp.responseText);
+            console.log(chkRes);
+        }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
+
+function findState(text) {
+    let arr = JSON.parse(text);
+    let res = false;
+    for (let i = 0; i < arr.length; i++) {
+        let row = arr[i];
+        console.log(row.gameStateID);
+        if (row.gameStateID == "INPROGRESS" || row.gameStateID == "COMPLETE") {
+            res = false;
+            console.log(row.gameStateID + res);
+            alert("The game has already started or completed. No changes allowed");
+            break;
+        } else {
+            res = true;
+            console.log(row.gameStateID + res);
+        }
+
+    }
+    if(res === true){
+        document.querySelector("#createTeam").removeAttribute("disabled", "enabled");
+    }
+    return res;
+}
+
+
 
 
 

@@ -29,10 +29,16 @@
                 <h1>Team Management</h1>
             </div>
             <div class="col-1-auto">
-                <img id="logo" class="img-thumbnail rounded float-right" alt="Bowling App logo"/>
+                <img src="BrowserArouser_LOGO.png" alt="Awesome Bowling logo" width="100" height="100 class="float-right" ">
             </div>
         </div>
         <div>
+            <!--Exp-->
+<!--            <form action="api/getAllPlayers.php" method="GET">
+                <input type="hidden" value="" name="hiddenID" id="hiddenID">
+                <button disabled id="mPlayers" class="tempD" type="submit">Manage Players</button>
+            </form>-->
+            <!--End Exp-->
             <form action="displayPlayers.php" method="GET">
                 <input type="hidden" value="" name="hiddenID" id="hiddenID">
                 <button disabled id="mPlayers" class="tempD" type="submit">Manage Players</button>
@@ -49,10 +55,10 @@
                     <h2>Teams</h2>
                     <form action="createTeam.php" method="GET">
                         <input type="hidden" value =" 0" id="setTeamID" name="id">
-                        <button id="createTeam" type="submit"enabled>Create Team</button>
+                        <button id="createTeam" type="submit" disabled class="a_btnCT">Create Team</button>
                     </form>
                     <!--Experiment-->
-                    <button id="updateTeam" disabled type="button" data-toggle="modal" data-target=".bd-example-modal-sm">Update Team</button>
+                    <button id="updateTeam" disabled type="button" data-toggle="modal" data-target=".bd-example-modal-sm" class="a_btnCT">Update Team</button>
                     <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-md">
                             <div class="modal-content" >
@@ -68,8 +74,8 @@
                         </div>
                     </div>
                     <!--Experiment-->
-                    <button id="deleteTeam" disabled>Delete Team</button>
-                    <table class="table table-responsive border table-hover text-center">
+                    <button id="deleteTeam" disabled class="a_btnCT">Delete Team</button>
+                    <table class="table  border table-hover text-center" id="mAT">
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">Team ID</th>
