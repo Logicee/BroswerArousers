@@ -143,3 +143,8 @@ h4{
     color: whitesmoke;
     padding-bottom: 70px;
 }
+#table1{
+   overflow-y:scroll;
+   height:400px;
+   display:block;
+}
